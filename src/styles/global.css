@@ -105,7 +105,7 @@ body {
 }
 
 main {
-  @apply mb-auto;
+  @apply mb-auto container h-full mx-auto py-8;
 }
 
 .link-hover {
