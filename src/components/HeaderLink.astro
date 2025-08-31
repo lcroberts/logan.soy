@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a">;
+
+const { href, class: className, ...props } = Astro.props;
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
+const subpath = pathname.match(/[^\/]+/g);
+const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
+---
+
+<a href={href} class:list={['my-2 mx-3 block link-hover last:mb-3 last:md:mb-2', className, { active: isActive }]} {...props}>
+  <slot />
+</a>

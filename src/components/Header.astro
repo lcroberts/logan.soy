@@ -1,0 +1,50 @@
+---
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+import DarkModeToggle from "./DarkModeToggle.astro";
+import LogoLinks from "./LogoLinks.astro";
+---
+
+
+<header>
+  <nav class="bg-crust">
+    <div class="mx-auto items-center gap-4 px-4 md:flex">
+      <!-- Logo -->
+      <div class="flex w-full items-center justify-between md:w-auto">
+        <div class="flex items-center gap-2 pe-3 md:hidden">
+          <!-- Mobile Menu Button -->
+          <button class="mobile-menu-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <title>bars-3-bottom-left</title>
+              <g fill="none">
+                <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                ></path>
+              </g>
+            </svg>
+          </button>
+        </div>
+        <a href="/" class="link-hover mx-2 my-3 flex flex-1 items-center">
+          <span class="hover:text-peach! font-bold">{SITE_TITLE}</span>
+        </a>
+        <div class="flex items-center gap-3 md:hidden">
+        <LogoLinks />
+          <!-- Mobile Dark Toggle -->
+          <DarkModeToggle id="dark_mode_toggle_mobile" />
+        </div>
+      </div>
+      <!-- Primary Navigation -->
+      <div
+        class="navigation-menu max-h-0 flex-col items-center justify-start overflow-hidden transition-[max-height] duration-250 ease-linear md:flex md:max-h-8 md:flex-row md:space-x-1 md:transition-none"
+      >
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/about">About</HeaderLink>
+      </div>
+      <!-- Desktop Dark Mode Toggle -->
+      <div class="ms-auto hidden items-center gap-3 md:flex">
+        <LogoLinks />
+        <DarkModeToggle id="dark_mode_toggle" />
+      </div>
+    </div>
+  </nav>
+</header>

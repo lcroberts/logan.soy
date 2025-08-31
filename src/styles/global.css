@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@source "../content/";
+@source "../layouts/";
+@source "../components/";
+@source "../pages/";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-rosewater: hsl(11deg, 59%, 67%);
+  --color-flamingo: hsl(0deg, 60%, 67%);
+  --color-pink: hsl(316deg, 73%, 69%);
+  --color-mauve: hsl(266deg, 85%, 58%);
+  --color-red: hsl(347deg, 87%, 44%);
+  --color-maroon: hsl(355deg, 76%, 59%);
+  --color-peach: hsl(22deg, 99%, 52%);
+  --color-yellow: hsl(35deg, 77%, 49%);
+  --color-green: hsl(109deg, 58%, 40%);
+  --color-teal: hsl(183deg, 74%, 35%);
+  --color-sky: hsl(197deg, 97%, 46%);
+  --color-sapphire: hsl(189deg, 70%, 42%);
+  --color-blue: hsl(220deg, 91%, 54%);
+  --color-lavender: hsl(231deg, 97%, 72%);
+  --color-cat-text: hsl(234deg, 16%, 35%);
+  --color-subtext-1: hsl(233deg, 13%, 41%);
+  --color-subtext-0: hsl(233deg, 10%, 47%);
+  --color-overlay-2: hsl(232deg, 10%, 53%);
+  --color-overlay-1: hsl(231deg, 10%, 59%);
+  --color-overlay-0: hsl(228deg, 11%, 65%);
+  --color-surface-2: hsl(227deg, 12%, 71%);
+  --color-surface-1: hsl(225deg, 14%, 77%);
+  --color-surface-0: hsl(223deg, 16%, 83%);
+  --color-base: hsl(220deg, 23%, 95%);
+  --color-mantle: hsl(220deg, 22%, 92%);
+  --color-crust: hsl(220deg, 21%, 89%);
+}
+
+html.dark {
+  --color-rosewater: hsl(10deg, 56%, 91%);
+  --color-flamingo: hsl(0deg, 59%, 88%);
+  --color-pink: hsl(316deg, 72%, 86%);
+  --color-mauve: hsl(267deg, 84%, 81%);
+  --color-red: hsl(343deg, 81%, 75%);
+  --color-maroon: hsl(350deg, 65%, 77%);
+  --color-peach: hsl(23deg, 92%, 75%);
+  --color-yellow: hsl(41deg, 86%, 83%);
+  --color-green: hsl(115deg, 54%, 76%);
+  --color-teal: hsl(170deg, 57%, 73%);
+  --color-sky: hsl(189deg, 71%, 73%);
+  --color-sapphire: hsl(199deg, 76%, 69%);
+  --color-blue: hsl(217deg, 92%, 76%);
+  --color-lavender: hsl(232deg, 97%, 85%);
+  --color-cat-text: hsl(226deg, 64%, 88%);
+  --color-subtext-1: hsl(227deg, 35%, 80%);
+  --color-subtext-0: hsl(228deg, 24%, 72%);
+  --color-overlay-2: hsl(228deg, 17%, 64%);
+  --color-overlay-1: hsl(230deg, 13%, 55%);
+  --color-overlay-0: hsl(231deg, 11%, 47%);
+  --color-surface-2: hsl(233deg, 12%, 39%);
+  --color-surface-1: hsl(234deg, 13%, 31%);
+  --color-surface-0: hsl(237deg, 16%, 23%);
+  --color-base: hsl(240deg, 21%, 15%);
+  --color-mantle: hsl(240deg, 21%, 12%);
+  --color-crust: hsl(240deg, 23%, 9%);
+}
+
+@theme inline {
+  --color-rosewater: var(--color-rosewater);
+  --color-flamingo: var(--color-flamingo);
+  --color-pink: var(--color-pink);
+  --color-mauve: var(--color-mauve);
+  --color-red: var(--color-red);
+  --color-maroon: var(--color-maroon);
+  --color-peach: var(--color-peach);
+  --color-yellow: var(--color-yellow);
+  --color-green: var(--color-green);
+  --color-teal: var(--color-teal);
+  --color-sky: var(--color-sky);
+  --color-sapphire: var(--color-sapphire);
+  --color-blue: var(--color-blue);
+  --color-lavender: var(--color-lavender);
+  --color-cat-text: var(--color-cat-text);
+  --color-subtext-1: var(--color-subtext-1);
+  --color-subtext-0: var(--color-subtext-0);
+  --color-overlay-2: var(--color-overlay-2);
+  --color-overlay-1: var(--color-overlay-1);
+  --color-overlay-0: var(--color-overlay-0);
+  --color-surface-2: var(--color-surface-2);
+  --color-surface-1: var(--color-surface-1);
+  --color-surface-0: var(--color-surface-0);
+  --color-base: var(--color-base);
+  --color-mantle: var(--color-mantle);
+  --color-crust: var(--color-crust);
+}
+
+/* Set default styles */
+html {
+  @apply text-cat-text;
+  @apply bg-base;
+}
+
+body {
+  @apply min-h-screen flex flex-col justify-between;
+}
+
+main {
+  @apply mb-auto;
+}
+
+.link-hover {
+  position: relative;
+  text-decoration: none;
+  background-clip: text;
+  color: transparent;
+  transition: background-position 0.3s;
+  background-size: 200% 100%;
+  background-color: var(--color-cat-text);
+  background-image: linear-gradient(to right, var(--color-peach) 50%, var(--color-cat-text) 50%);
+  background-position: 100% 0;
+}
+
+.text-content {
+  a {
+    @apply text-blue underline hover:text-mauve active:text-mauve;
+  }
+
+  h1 {
+    @apply text-red text-4xl;
+  }
+
+  h2 {
+    @apply text-peach text-3xl;
+  }
+
+  h3 {
+    @apply text-yellow text-2xl;
+  }
+
+  h4 {
+    @apply text-green text-xl;
+  }
+
+  h5 {
+    @apply text-sapphire text-lg;
+  }
+
+  h6 {
+    @apply text-lavender;
+  }
+
+  blockquote {
+    @apply italic font-bold px-4;
+  }
+
+  :not(.chroma)>code {
+    @apply bg-surface-0 px-2 rounded;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li {
+    @apply ms-4 my-2;
+  }
+}
+
+mark {
+  @apply bg-mauve text-crust;
+}
+
+#TableOfContents {
+  ul {
+    margin-left: 1rem;
+    list-style-type: disc;
+  }
+
+  li {
+    @apply my-2;
+  }
+
+  a {
+    @apply text-blue hover:text-mauve;
+  }
+}
+
+.taxonomy-tag {
+  color: var(--color-red) !important;
+}
+
+.taxonomy-category {
+  @apply bg-peach text-crust rounded p-1;
+}
+
+a.active {
+  background-image: linear-gradient(to right, var(--color-peach) 50%, var(--color-flamingo) 50%);
+}
+
+.link-hover:hover {
+  background-position: 0 0;
+}
+
+.link-hover::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 0.1rem;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-peach);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: left;
+}
+
+.link-hover:hover::before {
+  transform: scaleX(1);
+}
+
+ul.pagination {
+  @apply flex;
+  @apply justify-center;
+  @apply gap-4;
+  @apply text-crust;
+  @apply mt-6;
+  @apply h-fit;
+
+  li.page-item {
+    @apply h-fit;
+
+    a {
+      @apply p-2;
+      @apply bg-blue;
+      @apply rounded;
+    }
+
+    a[aria-current='page'] {
+      @apply bg-lavender;
+      @apply cursor-default;
+    }
+  }
+
+  li.disabled {
+    a {
+      @apply hidden;
+    }
+  }
+}
+
+#md-content {
+  @apply flex flex-col gap-4;
+}
+
+.highlight {
+  position: relative;
+}
+
+.chroma {
+  @apply py-3 px-1 rounded overflow-x-auto;
+}
+
+.copy-code-button {
+  @apply absolute rounded-bl rounded-tr border-[1.25px] border-surface-0;
+  z-index: 2;
+  right: 0;
+  top: 0;
+  @apply font-bold text-sm w-16 text-crust;
+  line-height: 1rem;
+  background-color: var(--color-overlay-2);
+  white-space: nowrap;
+  padding: 4px 4px 5px 4px;
+  margin: 0 0 0 1px;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.copy-code-button:hover,
+.copy-code-button:focus,
+.copy-code-button:active,
+.copy-code-button:active:hover {
+  color: #222225;
+  background-color: #b3b3b3;
+  opacity: 0.8;
+}
+
+.copyable-text-area {
+  position: absolute;
+  height: 0;
+  z-index: -1;
+  opacity: 0.01;
+}
