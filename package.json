@@ -1,7 +1,5 @@
 {
-  "name": "astro-playground",
-  "type": "module",
-  "version": "0.0.1",
+  "name": "logan.soy",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
