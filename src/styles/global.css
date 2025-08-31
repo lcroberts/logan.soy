@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
-@source "../content/";
-@source "../layouts/";
-@source "../components/";
-@source "../pages/";
+@source "content/";
+@source "layouts/";
+@source "components/";
+@source "pages/";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -199,7 +199,7 @@ mark {
 }
 
 .taxonomy-category {
-  @apply bg-peach text-crust rounded p-1;
+  @apply bg-peach text-crust rounded p-1 px-2;
 }
 
 a.active {

@@ -1,0 +1,36 @@
+---
+interface Props {
+  tags: Array<string>;
+  categories: Array<string>;
+}
+
+const { tags, categories } = Astro.props;
+---
+
+{
+  (tags.length > 0 || categories.length > 0) && (
+    <ul class="flex flex-row flex-wrap gap-4">
+      {categories.length > 0 &&
+        categories.map((category) => {
+          return (
+            <li>
+              <a href={`/categories/${category}`} class="taxonomy-category">
+                {category}
+              </a>
+            </li>
+          );
+        })}
+      {tags.length > 0 &&
+        tags.map((tag) => {
+          return (
+            <li>
+              <a href={`/tags/${tag}`} class="taxonomy-tag">
+                <i class="bi bi-tag" />
+                &nbsp;<span class="">{tag}</span>
+              </a>
+            </li>
+          );
+        })}
+    </ul>
+  )
+}
