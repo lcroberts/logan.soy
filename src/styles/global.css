@@ -153,7 +153,7 @@ main {
     @apply italic font-bold px-4;
   }
 
-  :not(.chroma)>code {
+  :not(.astro-code)>code {
     @apply bg-surface-0 px-2 rounded;
   }
 
@@ -167,6 +167,10 @@ main {
 
   li {
     @apply ms-4 my-2;
+  }
+
+  img {
+    @apply mx-auto;
   }
 }
 
@@ -294,4 +298,24 @@ ul.pagination {
   height: 0;
   z-index: -1;
   opacity: 0.01;
+}
+
+.astro-code {
+  @apply p-2 rounded;
+}
+
+.astro-code,
+.astro-code span {
+  background-color: var(--color-surface-0) !important;
+}
+.dark {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    /* background-color: var(--shiki-dark-bg) !important; */
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
 }
