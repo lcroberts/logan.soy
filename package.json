@@ -1,5 +1,6 @@
 {
   "name": "logan.soy",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
