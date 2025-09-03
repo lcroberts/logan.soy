@@ -1,8 +1,12 @@
 ---
+import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import PageCard from "../components/PageCard.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+
+const posts = (await getCollection("pages")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <!doctype html>
@@ -12,7 +16,21 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
   </head>
   <body>
     <Header />
-    <main>
+    <main class="container">
+      <div class="mb-4 text-lg text-center">
+        Welcome to <span class="text-peach">logan.soy</span> my dumping ground for random wepages I make for fun.
+      </div>
+      <section>
+        <ul>
+          {
+            posts.map((post) => (
+              <li>
+                <PageCard page={post} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </main>
     <Footer />
   </body>
