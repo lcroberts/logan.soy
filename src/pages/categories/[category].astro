@@ -9,18 +9,18 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 export async function getStaticPaths() {
   const allPosts = await getCollection("pages");
 
-  const uniqueTags = [...new Set(allPosts.map((post: any) => post.data.tags).flat())];
+  const uniqueCategories = [...new Set(allPosts.map((post) => post.data.categories).flat())];
 
-  return uniqueTags.map((tag) => {
-    const filteredPages = allPosts.filter((post: any) => post.data.tags.includes(tag));
+  return uniqueCategories.map((category) => {
+    const filteredPages = allPosts.filter((post) => post.data.categories.includes(category));
     return {
-      params: { tag },
+      params: { category },
       props: { pages: filteredPages },
     };
   });
 }
 
-const { tag } = Astro.params;
+const { category } = Astro.params;
 const { pages } = Astro.props;
 ---
 
@@ -32,7 +32,7 @@ const { pages } = Astro.props;
   <body>
     <Header />
     <main>
-      <h1 class="text-center capitalize mb-4">{tag}</h1>
+      <h1 class="mb-4 text-center capitalize">{category}</h1>
       {
         pages.map((page) => {
           return <PageCard page={page} />;
