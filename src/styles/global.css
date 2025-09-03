@@ -121,33 +121,38 @@ main {
   width: fit-content;
 }
 
+
+h1 {
+  @apply text-red text-4xl;
+}
+
+h2 {
+  @apply text-peach text-3xl;
+}
+
+h3 {
+  @apply text-yellow text-2xl;
+}
+
+h4 {
+  @apply text-green text-xl;
+}
+
+h5 {
+  @apply text-sapphire text-lg;
+}
+
+h6 {
+  @apply text-lavender;
+}
+
+.link {
+  @apply text-blue underline hover:text-mauve active:text-mauve;
+}
+
 .text-content {
   a {
     @apply text-blue underline hover:text-mauve active:text-mauve;
-  }
-
-  h1 {
-    @apply text-red text-4xl;
-  }
-
-  h2 {
-    @apply text-peach text-3xl;
-  }
-
-  h3 {
-    @apply text-yellow text-2xl;
-  }
-
-  h4 {
-    @apply text-green text-xl;
-  }
-
-  h5 {
-    @apply text-sapphire text-lg;
-  }
-
-  h6 {
-    @apply text-lavender;
   }
 
   blockquote {
@@ -309,7 +314,9 @@ ul.pagination {
 .astro-code span {
   background-color: var(--color-surface-0) !important;
 }
+
 .dark {
+
   .astro-code,
   .astro-code span {
     color: var(--shiki-dark) !important;

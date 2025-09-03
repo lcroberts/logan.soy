@@ -5,13 +5,13 @@ import Taxonomies from "./Taxonomies.astro";
 const { page } = Astro.props;
 ---
 
-<div class="bg-surface-0 text-subtext-0 flex flex-col gap-4 rounded p-4">
-  <h2 class="text-blue hover:text-mauve text-2xl underline">
-    <a href={`/page/${page.id}`}>{page.data.title}</a>
-  </h2>
-  <div class="!text-peach flex flex-col gap-2 md:flex-row md:gap-4">
-    <div><i class="bi bi-person-square"></i> {page.data.author}</div>
-    <div><i class="bi bi-calendar2-week-fill"></i> <FormattedDate date={new Date(page.data.date)} /></div>
+<div class="bg-surface-0 text-subtext-0 flex flex-col gap-4 rounded p-4 cursor-pointer shadow-md hover:shadow-lg" data-location={`/page/${page.id}`}>
+  <div>
+    <a class="link text-2xl hover:text-red" href={`/page/${page.id}`}>{page.data.title}</a>
+  </div>
+  <div>{page.data.description}</div>
+  <div class="text-peach flex flex-col gap-2 md:flex-row md:gap-4">
+    <div><i class="bi bi-calendar2-week-fill"></i>&nbsp;<FormattedDate date={new Date(page.data.date)} /></div>
   </div>
   <Taxonomies tags={page.data.tags} categories={page.data.categories} />
 </div>

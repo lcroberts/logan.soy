@@ -9,7 +9,6 @@ const pages = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
-      author: z.string(),
       categories: z.array(z.string()),
       tags: z.array(z.string()),
       // Transform string to Date object
