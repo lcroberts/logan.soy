@@ -32,7 +32,7 @@ const { pages } = Astro.props;
   <body>
     <Header />
     <main>
-      <h1 class="text-center">{tag}</h1>
+      <h1 class="text-center capitalize">{tag}</h1>
       {
         pages.map((page) => {
           return <PageCard page={page} />;

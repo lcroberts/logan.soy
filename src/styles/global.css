@@ -201,10 +201,11 @@ mark {
 
 .taxonomy-tag {
   color: var(--color-red) !important;
+  text-transform: capitalize;
 }
 
 .taxonomy-category {
-  @apply bg-peach text-crust rounded p-1 px-2;
+  @apply bg-peach text-crust rounded p-1 px-2 capitalize;
 }
 
 a.active {
