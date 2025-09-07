@@ -1,14 +1,10 @@
-<script>
-	function greet() {
-		alert('Welcome to Svelte!');
-	}
+<script lang="ts">
+  let amount: Number | null | undefined = $state(null);
 </script>
 
-<button onclick={greet}>click me</button>
-
-<style>
-	button {
-		font-size: 2em;
-    cursor: pointer;
-	}
-</style>
+<div class="w-full">
+  <input bind:value={amount} type="number" />
+  {#if amount}
+    not null
+  {/if}
+</div>

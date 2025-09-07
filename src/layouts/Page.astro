@@ -23,8 +23,8 @@ const { title, description, date, updatedDate, heroImage } = Astro.props;
         <div class="hero-image">
           {heroImage && <Image width={1020} height={510} src={heroImage} alt="" class="mx-auto" />}
         </div>
-        <div class="text-content text-center">
-          <div class="title flex flex-col gap-2">
+        <div class="">
+          <div class="title text-center flex flex-col gap-2">
             <h1>{title}</h1>
             <h2>
               <FormattedDate date={date} />
@@ -37,7 +37,7 @@ const { title, description, date, updatedDate, heroImage } = Astro.props;
               }
             </h2>
             <div class="text-lg">{description}</div>
-            <hr />
+            <hr class="mb-4" />
           </div>
           <slot />
         </div>

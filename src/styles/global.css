@@ -328,3 +328,7 @@ ul.pagination {
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
 }
+
+input {
+  @apply block rounded border-1 border-overlay-0 p-0.5 outline-lavender;
+}
