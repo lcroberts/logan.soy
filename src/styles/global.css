@@ -329,6 +329,16 @@ ul.pagination {
   }
 }
 
-input {
-  @apply block rounded border-1 border-overlay-0 p-0.5 outline-lavender;
+input:not(.no-style),
+select:not(.no-style),
+.input {
+  @apply block rounded border-1 border-overlay-0 p-0.5 px-1 outline-lavender;
+}
+
+option {
+  @apply bg-surface-0;
+}
+
+input[type=range] {
+  @apply cursor-pointer rounded-lg accent-blue appearance-none bg-surface-0;
 }
