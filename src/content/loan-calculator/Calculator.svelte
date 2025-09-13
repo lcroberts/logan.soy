@@ -1,4 +1,5 @@
 <script lang="ts">
+  import NumberInput from "../../components/svelte/NumberInput.svelte";
   import { totalMontlyPayment, formatCurrency } from "./functions";
 
   let amount: number = $state(0);
@@ -16,7 +17,7 @@
 
 <div class="w-full">
   <label for="loan-amount">Loan Amount:</label>
-  <input id="loan-amount" bind:value={amount} type="number" />
+  <NumberInput id="loan-amount" bind:value={amount} min="0"/>
   <label for="loan-term">Loan Term:</label>
   <div class="flex gap-2">
     <input id="loan-term" bind:value={term} type="number" />
