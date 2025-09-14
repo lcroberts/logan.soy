@@ -27,7 +27,6 @@
       .slice(0, sliceIndex)
       .join("")
       .replaceAll(decimalSeparator, "");
-    thousands = thousands.replace(/^0+/g, '');
     let separatorIndex = thousands.length - 3;
     while (separatorIndex > 0) {
       thousands = [thousands.slice(0, separatorIndex), thousandsSeparator, thousands.slice(separatorIndex)].join("");
@@ -56,8 +55,7 @@
     let digits = target.value.replace(/,/g, "");
     const formatted = formatNumber(digits);
 
-    const regex = new RegExp(String.raw`/${thousandsSeparator}/`, "g");
-    digits = formatted.replace(regex, "");
+    digits = formatted.replaceAll(thousandsSeparator, "");
     let num = parseFloat(digits);
     value = isNaN(num) ? null : num;
 

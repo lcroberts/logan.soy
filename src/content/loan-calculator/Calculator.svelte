@@ -2,9 +2,9 @@
   import NumberInput from "../../components/svelte/NumberInput.svelte";
   import { totalMontlyPayment, formatCurrency } from "./functions";
 
-  let amount: number = $state(0);
-  let term: number = $state(0);
-  let interestPercentage: number = $state(0);
+  let amount: number = $state(1000);
+  let term: number = $state(1);
+  let interestPercentage: number = $state(5);
   let termMultiplier = $state(12);
   const interest = $derived((interestPercentage || 0) / 100);
   const montlyPayment = $derived.by(() => {
