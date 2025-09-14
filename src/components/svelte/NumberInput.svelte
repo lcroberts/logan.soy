@@ -68,7 +68,7 @@
     target.setSelectionRange(selectionStart + diff, selectionStart + diff);
   }
   onMount(() => {
-    element.value = value;
+    element.value = formatNumber(value.toString());
   });
 </script>
 
