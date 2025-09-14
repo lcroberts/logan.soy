@@ -3,41 +3,50 @@
   import type { HTMLInputAttributes } from "svelte/elements";
   interface Props extends HTMLInputAttributes {
     maxDecimal?: number;
+    thousandsSeparator?: string;
+    decimalSeparator?: string;
   }
-  let { class: classVal, value = $bindable(), maxDecimal = 2, ...props }: Props = $props();
+  let { class: classVal, value = $bindable(), maxDecimal = 2, thousandsSeparator = ",", decimalSeparator = ".", ...props }: Props = $props();
 
   let element: HTMLInputElement;
 
   const formatNumber = (val: string) => {
     if (val === "" || val === "-") return val;
-
-    let num = parseFloat(val.replaceAll(",", ""));
-    if (isNaN(num)) return val;
-    num = Math.trunc(num * 10 ** maxDecimal) / 10 ** maxDecimal;
-    console.debug(num);
-
-    let formatted = new Intl.NumberFormat("en-US", { maximumFractionDigits: 2 }).format(num);
-    console.debug(val, num, formatted);
-
-    if (val.endsWith(".")) {
-      if (val.endsWith("..")) {
-        formatted += ".";
-      } else if (val.matchAll(/\./g).toArray().length < 2) {
-        formatted += ".";
-      }
+    const stripInvalidRegex = new RegExp(String.raw`[^\d\-${thousandsSeparator}${decimalSeparator}]`, "g");
+    val = val.replaceAll(stripInvalidRegex, '');
+    let isNegative = false;
+    if (val.charAt(0) === "-") {
+      isNegative = true;
     }
-    const trailingZeros = val.match(/\.\d*0$/);
-    if (trailingZeros) {
-      const match = trailingZeros[0].substring(1); // Only decimal
-      const zeroCount = match.matchAll(/0/g).toArray().length;
-      const count = Math.min(maxDecimal - (match.length - zeroCount), match.length);
-      if (!(formatted.includes(".") || formatted.includes(".")) && count > 0) {
-        formatted += ".";
-      }
-      formatted += new String("0").repeat(count);
+    val = val.replaceAll("-", "");
+    val = val.replaceAll(thousandsSeparator, "");
+    // Format regardless of negative status
+    const parts = val.split(decimalSeparator);
+    const sliceIndex = parts.length > 1 ? parts.length - 1 : parts.length;
+    let thousands = parts
+      .slice(0, sliceIndex)
+      .join("")
+      .replaceAll(decimalSeparator, "");
+    thousands = thousands.replace(/^0+/g, '');
+    let separatorIndex = thousands.length - 3;
+    while (separatorIndex > 0) {
+      thousands = [thousands.slice(0, separatorIndex), thousandsSeparator, thousands.slice(separatorIndex)].join("");
+      separatorIndex -= 3;
     }
+    let decimal = parts.slice(sliceIndex).join("");
+    decimal = decimal.substring(0, maxDecimal);
 
-    return formatted;
+    val = thousands;
+    if (parts.length > 1) {
+      val += decimalSeparator;
+    }
+    if (decimal !== "") {
+      val += decimal;
+    }
+    if (isNegative) {
+      val = "-" + val;
+    }
+    return val;
   };
 
   function handleInput(e: Event) {
@@ -47,7 +56,8 @@
     let digits = target.value.replace(/,/g, "");
     const formatted = formatNumber(digits);
 
-    digits = formatted.replace(/,/g, "");
+    const regex = new RegExp(String.raw`/${thousandsSeparator}/`, "g");
+    digits = formatted.replace(regex, "");
     let num = parseFloat(digits);
     value = isNaN(num) ? null : num;
 
