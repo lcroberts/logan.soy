@@ -17,7 +17,9 @@
 
 <div class="w-full">
   <label for="loan-amount">Loan Amount:</label>
-  <NumberInput id="loan-amount" bind:value={amount} min="0"/>
+  <div class="input w-fit">
+    $ <NumberInput id="loan-interest" bind:value={amount} class="no-style" min="1" allowNegative={false}/>
+  </div>
   <label for="loan-term">Loan Term:</label>
   <div class="flex gap-2">
     <input id="loan-term" bind:value={term} type="number" />
@@ -26,7 +28,9 @@
       <option value={1}>Months</option>
     </select>
   </div>
-  <label for="loan-interest">Yearly Interest Rate (%):</label>
-  <input id="loan-interest" bind:value={interestPercentage} type="number" />
+  <label for="loan-interest">Interest Rate:</label>
+  <div class="input w-fit">
+    <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-20" /> %
+  </div>
   <div>Monthly Payment: {formatCurrency(montlyPayment)}</div>
 </div>

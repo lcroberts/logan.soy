@@ -335,6 +335,10 @@ select:not(.no-style),
   @apply block rounded border-1 border-overlay-0 p-0.5 px-1 outline-lavender;
 }
 
+input.no-style {
+  @apply focus:border-none focus:outline-none;
+}
+
 option {
   @apply bg-surface-0;
 }

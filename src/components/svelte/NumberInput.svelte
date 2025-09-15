@@ -5,20 +5,20 @@
     maxDecimal?: number;
     thousandsSeparator?: string;
     decimalSeparator?: string;
+    allowNegative?: boolean;
   }
-  let { class: classVal, value = $bindable(), maxDecimal = 2, thousandsSeparator = ",", decimalSeparator = ".", ...props }: Props = $props();
+  let { class: classVal, value = $bindable(), maxDecimal = 2, thousandsSeparator = ",", decimalSeparator = ".", allowNegative = true, ...props }: Props = $props();
 
   let element: HTMLInputElement;
 
   const formatNumber = (val: string) => {
-    if (val === "" || val === "-") return val;
-    const stripInvalidRegex = new RegExp(String.raw`[^\d\-${thousandsSeparator}${decimalSeparator}]`, "g");
-    val = val.replaceAll(stripInvalidRegex, '');
+    if (val === "") return val;
     let isNegative = false;
-    if (val.charAt(0) === "-") {
+    if (val.charAt(0) === "-" && allowNegative) {
       isNegative = true;
     }
-    val = val.replaceAll("-", "");
+    const stripInvalidRegex = new RegExp(String.raw`[^\d${thousandsSeparator}${decimalSeparator}]`, "g");
+    val = val.replaceAll(stripInvalidRegex, '');
     val = val.replaceAll(thousandsSeparator, "");
     // Format regardless of negative status
     const parts = val.split(decimalSeparator);
