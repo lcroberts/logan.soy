@@ -62,13 +62,25 @@ const { title, description } = Astro.props;
               el.checked = checked;
             }
           });
+          let event;
           if (lightSwitch.checked) {
             document.documentElement.classList.add("dark");
             localStorage.setItem("theme", "dark");
+            event = new CustomEvent("theme-change", {
+              detail: {
+                current: "dark",
+              }
+            });
           } else {
             document.documentElement.classList.remove("dark");
             localStorage.setItem("theme", "light");
+            event = new CustomEvent("theme-change", {
+              detail: {
+                current: "light",
+              }
+            });
           }
+          document.dispatchEvent(event);
         };
       });
     }

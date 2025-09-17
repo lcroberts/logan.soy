@@ -3,7 +3,7 @@ export function totalMontlyPayment(loanAmount: number, termInterest: number, num
 }
 
 export function principlePayment(totalMonthly: number, outstandingBalance: number, termInterest: number): number {
-  return bankersRound(totalMonthly - outstandingBalance / termInterest);
+  return bankersRound(totalMonthly - (outstandingBalance * termInterest));
 }
 
 export function bankersRound(amount: number, decimalPlaces: number = 2): number {
@@ -19,4 +19,8 @@ export function formatCurrency(amount: number): string {
     currency: "USD",
     trailingZeroDisplay: 'stripIfInteger',
   }).format(amount);
+}
+
+export function getCssVar(name: string) {
+  return getComputedStyle(document.body).getPropertyValue(name)
 }

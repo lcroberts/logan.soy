@@ -5,8 +5,18 @@
 
 <script lang="ts">
   import NumberInput from "../../components/svelte/NumberInput.svelte";
-  import { totalMontlyPayment, formatCurrency } from "./functions";
   import type { Attachment } from "svelte/attachments";
+  import { totalMontlyPayment, formatCurrency, principlePayment, getCssVar } from "./functions";
+
+  let redValue = $state(getCssVar("--color-red"));
+  let greenValue = $state(getCssVar("--color-green"));
+  let blueValue = $state(getCssVar("--color-blue"));
+  document.addEventListener("theme-change", () => {
+    console.debug("running");
+    redValue = getCssVar("--color-red");
+    greenValue = getCssVar("--color-green");
+    blueValue = getCssVar("--color-blue");
+  });
 
   let amount: number = $state(1000);
   let term: number = $state(1);
@@ -21,13 +31,56 @@
   });
 
   const chartJsAttachment: Attachment = (element) => {
+    const labelUnit = termMultiplier === 12 ? "Year" : "Month";
+    let balance = amount;
+    let monthly = [];
+    let labels = [];
+    let interestPayment = [];
+    let principalPayment = [];
+    let remaining = [];
+    for (let i = 0; i < term; i++) {
+      labels.push(labelUnit + " " + (i + 1));
+      for (let j = 0; j < termMultiplier; j++) {
+        monthly.push(montlyPayment);
+        const principalReduction = principlePayment(montlyPayment, balance, interest / 12);
+        principalPayment.push(principalReduction);
+        const interestPayed = montlyPayment - principalReduction;
+        interestPayment.push(interestPayed);
+        balance -= principalReduction;
+        remaining.push(balance);
+      }
+    }
     const chart = new Chart(element as HTMLCanvasElement, {
       type: "line",
+      options: {
+        scales: {
+          x: {
+            ticks: {
+              stepSize: termMultiplier,
+            },
+          },
+        },
+      },
       data: {
-        labels: [1, 2, 3, 4, 5],
+        labels: labels,
         datasets: [
           {
-            data: [100, 200, 300, 400, amount],
+            label: "Balance",
+            data: remaining,
+            borderColor: blueValue,
+            backgroundColor: blueValue,
+          },
+          {
+            label: "Principlay Payment",
+            data: principalPayment,
+            borderColor: greenValue,
+            backgroundColor: greenValue,
+          },
+          {
+            label: "Interest Payment",
+            data: interestPayment,
+            borderColor: redValue,
+            backgroundColor: redValue,
           },
         ],
       },
