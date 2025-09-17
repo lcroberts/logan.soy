@@ -12,7 +12,6 @@
   let greenValue = $state(getCssVar("--color-green"));
   let blueValue = $state(getCssVar("--color-blue"));
   document.addEventListener("theme-change", () => {
-    console.debug("running");
     redValue = getCssVar("--color-red");
     greenValue = getCssVar("--color-green");
     blueValue = getCssVar("--color-blue");
