@@ -6,7 +6,7 @@
 <script lang="ts">
   import NumberInput from "../../components/svelte/NumberInput.svelte";
   import type { Attachment } from "svelte/attachments";
-  import { totalMontlyPayment, formatCurrency, principlePayment, getCssVar } from "./functions";
+  import { bankersRound, totalMontlyPayment, formatCurrency, principlePayment, getCssVar } from "./functions";
 
   let redValue = $state(getCssVar("--color-red"));
   let greenValue = $state(getCssVar("--color-green"));
@@ -32,7 +32,6 @@
   const chartJsAttachment: Attachment = (element) => {
     const labelUnit = termMultiplier === 12 ? "Year" : "Month";
     let balance = amount;
-    let monthly = [];
     let labels = [];
     let interestPayment = [];
     let principalPayment = [];
@@ -40,13 +39,12 @@
     for (let i = 0; i < term; i++) {
       labels.push(labelUnit + " " + (i + 1));
       for (let j = 0; j < termMultiplier; j++) {
-        monthly.push(montlyPayment);
         const principalReduction = principlePayment(montlyPayment, balance, interest / 12);
         principalPayment.push(principalReduction);
-        const interestPayed = montlyPayment - principalReduction;
+        const interestPayed = bankersRound(montlyPayment - principalReduction);
         interestPayment.push(interestPayed);
-        balance -= principalReduction;
-        remaining.push(balance);
+        balance = bankersRound(balance - principalReduction);
+        remaining.push(Math.max(0, balance));
       }
     }
     const chart = new Chart(element as HTMLCanvasElement, {
