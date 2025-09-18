@@ -1,12 +1,11 @@
 <script module lang="ts">
-  import { CategoryScale, Chart, LinearScale, LineController, LineElement, PointElement } from "chart.js";
-  Chart.register(LineController, CategoryScale, LinearScale, PointElement, LineElement);
+  import { Chart } from "chart.js/auto";
 </script>
 
 <script lang="ts">
   import NumberInput from "../../components/svelte/NumberInput.svelte";
   import type { Attachment } from "svelte/attachments";
-  import { bankersRound, totalMontlyPayment, formatCurrency, principlePayment, getCssVar } from "./functions";
+  import { bankersRound, totalMontlyPayment, formatCurrency, getCssVar } from "./functions";
 
   let redValue = $state(getCssVar("--color-red"));
   let greenValue = $state(getCssVar("--color-green"));
@@ -31,51 +30,55 @@
 
   const chartJsAttachment: Attachment = (element) => {
     const labelUnit = termMultiplier === 12 ? "Year" : "Month";
-    let balance = amount;
+    let remainingPrincipal = structuredClone(amount);
     let labels = [];
-    let interestPayment = [];
-    let principalPayment = [];
-    let remaining = [];
+    let interestDataset = [];
+    let principalDataset = [];
     for (let i = 0; i < term; i++) {
-      labels.push(labelUnit + " " + (i + 1));
       for (let j = 0; j < termMultiplier; j++) {
-        const principalReduction = principlePayment(montlyPayment, balance, interest / 12);
-        principalPayment.push(principalReduction);
-        const interestPayed = bankersRound(montlyPayment - principalReduction);
-        interestPayment.push(interestPayed);
-        balance = bankersRound(balance - principalReduction);
-        remaining.push(Math.max(0, balance));
+        labels.push(i * termMultiplier + j + 1);
+        const interestPayment = bankersRound(remainingPrincipal * (interest / 12));
+        const principalPayment = bankersRound(montlyPayment - interestPayment);
+        remainingPrincipal -= principalPayment;
+        interestDataset.push(interestPayment);
+        principalDataset.push(principalPayment);
       }
     }
     const chart = new Chart(element as HTMLCanvasElement, {
       type: "line",
       options: {
         scales: {
-          x: {
+          y: {
             ticks: {
-              stepSize: termMultiplier,
+              format: {
+                style: "currency",
+                currency: "USD",
+              },
             },
           },
+          x: {
+            ticks: {
+              callback: function(tickValue, index, ticks) {
+                if (index % termMultiplier === termMultiplier - 1) {
+                  return labelUnit + " " + ((index + 1) / termMultiplier);
+                }
+              },
+            }
+          }
         },
       },
       data: {
         labels: labels,
         datasets: [
           {
-            label: "Balance",
-            data: remaining,
-            borderColor: blueValue,
-            backgroundColor: blueValue,
-          },
-          {
-            label: "Principlay Payment",
-            data: principalPayment,
+            label: "Principal Payment",
+            data: principalDataset,
             borderColor: greenValue,
             backgroundColor: greenValue,
           },
           {
             label: "Interest Payment",
-            data: interestPayment,
+            data: interestDataset,
             borderColor: redValue,
             backgroundColor: redValue,
           },
@@ -96,7 +99,18 @@
   <label for="loan-term">Loan Term:</label>
   <div class="flex gap-2">
     <input id="loan-term" bind:value={term} type="number" />
-    <select id="term-multiplier" bind:value={termMultiplier}>
+    <select
+      id="term-multiplier"
+      bind:value={
+        () => termMultiplier,
+        (v) => {
+          if (v === 1 && term < 12) {
+            term = 12;
+          }
+          termMultiplier = v;
+        }
+      }
+    >
       <option value={12}>Years</option>
       <option value={1}>Months</option>
     </select>

@@ -2,10 +2,6 @@ export function totalMontlyPayment(loanAmount: number, termInterest: number, num
   return bankersRound((loanAmount * termInterest * Math.pow(1 + termInterest, numberOfTerms)) / (Math.pow(1 + termInterest, numberOfTerms) - 1));
 }
 
-export function principlePayment(totalMonthly: number, outstandingBalance: number, termInterest: number): number {
-  return bankersRound(totalMonthly - (outstandingBalance * termInterest));
-}
-
 export function bankersRound(amount: number, decimalPlaces: number = 2): number {
   const placeAdjusted = amount * Math.pow(10, decimalPlaces);
   const rounded = Math.round(placeAdjusted);
