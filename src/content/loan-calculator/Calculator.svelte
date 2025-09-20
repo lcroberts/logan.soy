@@ -110,7 +110,7 @@
   };
 </script>
 
-<div class="mx-4 flex w-full flex-col gap-4 md:mx-0 md:flex-row">
+<div class="px-4 flex w-full flex-col gap-4 md:px-0 md:flex-row">
   <div>
     <label for="loan-amount">Loan Amount:</label>
     <div class="input w-fit">
