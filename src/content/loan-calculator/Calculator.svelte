@@ -10,10 +10,14 @@
   let redValue = $state(getCssVar("--color-red"));
   let greenValue = $state(getCssVar("--color-green"));
   let blueValue = $state(getCssVar("--color-blue"));
+  let catText = $state(getCssVar("--color-cat-text"));
+  let surface2 = $state(getCssVar("--color-surface-2"));
   document.addEventListener("theme-change", () => {
     redValue = getCssVar("--color-red");
     greenValue = getCssVar("--color-green");
     blueValue = getCssVar("--color-blue");
+    catText = getCssVar("--color-cat-text");
+    surface2 = getCssVar("--color-surface-2");
   });
 
   let amount: number = $state(1000);
@@ -47,22 +51,37 @@
     const chart = new Chart(element as HTMLCanvasElement, {
       type: "line",
       options: {
+        color: catText,
         scales: {
           y: {
             ticks: {
+              color: catText,
               format: {
                 style: "currency",
                 currency: "USD",
               },
             },
+            grid: {
+              color: surface2,
+            },
+            border: {
+              color: surface2,
+            },
           },
           x: {
             ticks: {
+              color: catText,
               callback: function (tickValue, index, ticks) {
                 if (index % termMultiplier === termMultiplier - 1) {
                   return labelUnit + " " + (index + 1) / termMultiplier;
                 }
               },
+            },
+            grid: {
+              color: surface2,
+            },
+            border: {
+              color: surface2,
             },
           },
         },
@@ -91,7 +110,7 @@
   };
 </script>
 
-<div class="flex flex-col mx-4 md:mx-0 md:flex-row w-full gap-4">
+<div class="mx-4 flex w-full flex-col gap-4 md:mx-0 md:flex-row">
   <div>
     <label for="loan-amount">Loan Amount:</label>
     <div class="input w-fit">
