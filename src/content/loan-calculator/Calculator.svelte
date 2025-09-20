@@ -58,13 +58,13 @@
           },
           x: {
             ticks: {
-              callback: function(tickValue, index, ticks) {
+              callback: function (tickValue, index, ticks) {
                 if (index % termMultiplier === termMultiplier - 1) {
-                  return labelUnit + " " + ((index + 1) / termMultiplier);
+                  return labelUnit + " " + (index + 1) / termMultiplier;
                 }
               },
-            }
-          }
+            },
+          },
         },
       },
       data: {
@@ -91,34 +91,38 @@
   };
 </script>
 
-<div class="w-full">
-  <label for="loan-amount">Loan Amount:</label>
-  <div class="input w-fit">
-    $ <NumberInput id="loan-amount" bind:value={amount} class="no-style" min="1" allowNegative={false} />
-  </div>
-  <label for="loan-term">Loan Term:</label>
-  <div class="flex gap-2">
-    <input id="loan-term" bind:value={term} type="number" />
-    <select
-      id="term-multiplier"
-      bind:value={
-        () => termMultiplier,
-        (v) => {
-          if (v === 1 && term < 12) {
-            term = 12;
+<div class="flex flex-col mx-4 md:mx-0 md:flex-row w-full gap-4">
+  <div>
+    <label for="loan-amount">Loan Amount:</label>
+    <div class="input w-fit">
+      $ <NumberInput id="loan-amount" bind:value={amount} class="no-style" min="1" allowNegative={false} />
+    </div>
+    <label for="loan-term">Loan Term:</label>
+    <div class="flex gap-2">
+      <input id="loan-term" bind:value={term} type="number" />
+      <select
+        id="term-multiplier"
+        bind:value={
+          () => termMultiplier,
+          (v) => {
+            if (v === 1 && term < 12) {
+              term = 12;
+            }
+            termMultiplier = v;
           }
-          termMultiplier = v;
         }
-      }
-    >
-      <option value={12}>Years</option>
-      <option value={1}>Months</option>
-    </select>
+      >
+        <option value={12}>Years</option>
+        <option value={1}>Months</option>
+      </select>
+    </div>
+    <label for="loan-interest">Interest Rate:</label>
+    <div class="input w-fit">
+      <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-20" /> %
+    </div>
+    <div>Monthly Payment: {formatCurrency(montlyPayment)}</div>
   </div>
-  <label for="loan-interest">Interest Rate:</label>
-  <div class="input w-fit">
-    <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-20" /> %
+  <div class="grow">
+    <canvas {@attach chartJsAttachment}></canvas>
   </div>
-  <div>Monthly Payment: {formatCurrency(montlyPayment)}</div>
-  <canvas {@attach chartJsAttachment}></canvas>
 </div>
