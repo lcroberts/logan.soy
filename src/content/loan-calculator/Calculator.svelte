@@ -55,9 +55,9 @@
           tooltip: {
             callbacks: {
               title(tooltipItems) {
-                return "Month " + tooltipItems[0].label
+                return "Month " + tooltipItems[0].label;
               },
-            }
+            },
           },
         },
         color: catText,
@@ -119,34 +119,40 @@
   };
 </script>
 
-<div class="px-4 flex w-full flex-col gap-4 md:px-0 md:flex-row">
-  <div>
-    <label for="loan-amount">Loan Amount:</label>
-    <div class="input w-fit">
-      $ <NumberInput id="loan-amount" bind:value={amount} class="no-style" min="1" allowNegative={false} />
+<div class="flex w-full flex-col gap-4 px-4 md:flex-row md:px-0">
+  <div class="flex flex-col gap-2">
+    <div>
+      <label for="loan-amount">Loan Amount:</label>
+      <div class="input flex w-full">
+        $ <NumberInput id="loan-amount" bind:value={amount} class="no-style" min="1" allowNegative={false} />
+      </div>
     </div>
-    <label for="loan-term">Loan Term:</label>
-    <div class="flex gap-2">
-      <input id="loan-term" bind:value={term} type="number" />
-      <select
-        id="term-multiplier"
-        bind:value={
-          () => termMultiplier,
-          (v) => {
-            if (v === 1 && term < 12) {
-              term = termMultiplier;
+    <div>
+      <label for="loan-term">Loan Term:</label>
+      <div class="flex w-full gap-2">
+        <input id="loan-term" class="grow" bind:value={term} type="number" />
+        <select
+          id="term-multiplier"
+          bind:value={
+            () => termMultiplier,
+            (v) => {
+              if (v === 1 && term < 12) {
+                term = termMultiplier;
+              }
+              termMultiplier = v;
             }
-            termMultiplier = v;
           }
-        }
-      >
-        <option value={12}>Years</option>
-        <option value={1}>Months</option>
-      </select>
+        >
+          <option value={12}>Years</option>
+          <option value={1}>Months</option>
+        </select>
+      </div>
     </div>
-    <label for="loan-interest">Interest Rate:</label>
-    <div class="input w-fit">
-      <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-20" /> %
+    <div class="flex gap-2 items-center justify-between">
+      <label for="loan-interest">Interest Rate:</label>
+      <div class="input">
+        <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style" /> %
+      </div>
     </div>
     <div>Monthly Payment: {formatCurrency(montlyPayment)}</div>
   </div>
