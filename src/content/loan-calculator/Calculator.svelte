@@ -31,6 +31,7 @@
     }
     return 0;
   });
+  const predictedTotalPayment = $derived(montlyPayment * term * termMultiplier);
 
   const chartJsAttachment: Attachment = (element) => {
     const labelUnit = termMultiplier === 12 ? "Year" : "Month";
@@ -155,6 +156,7 @@
       </div>
     </div>
     <div>Monthly Payment: {formatCurrency(montlyPayment)}</div>
+    <div>Total Payment: {formatCurrency(predictedTotalPayment)}</div>
   </div>
   <div class="grow">
     <canvas {@attach chartJsAttachment}></canvas>
