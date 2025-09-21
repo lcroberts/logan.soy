@@ -51,6 +51,15 @@
     const chart = new Chart(element as HTMLCanvasElement, {
       type: "line",
       options: {
+        plugins: {
+          tooltip: {
+            callbacks: {
+              title(tooltipItems) {
+                return "Month " + tooltipItems[0].label
+              },
+            }
+          },
+        },
         color: catText,
         scales: {
           y: {
@@ -125,7 +134,7 @@
           () => termMultiplier,
           (v) => {
             if (v === 1 && term < 12) {
-              term = 12;
+              term = termMultiplier;
             }
             termMultiplier = v;
           }
