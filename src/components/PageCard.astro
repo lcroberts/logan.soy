@@ -5,7 +5,7 @@ import Taxonomies from "./Taxonomies.astro";
 const { page } = Astro.props;
 ---
 
-<div class="bg-surface-0 text-subtext-0 flex flex-col gap-4 rounded p-4 cursor-pointer shadow-md hover:shadow-lg" data-location={`/page/${page.id}`}>
+<div class="bg-surface-0 text-subtext-0 flex flex-col gap-4 rounded p-4 cursor-pointer shadow-md hover:shadow-lg" data-location={`/${page.id}`}>
   <div>
     <a class="link text-2xl hover:text-red" href={`/${page.id}`}>{page.data.title}</a>
   </div>
