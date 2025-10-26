@@ -34,25 +34,26 @@
   });
   const predictedTotalPayment = $derived(montlyPayment * term * termMultiplier);
   const calculated = $derived.by(() => {
+    if (!amount || !term || !interestPercentage) return [];
+
     let calc = [];
-    if (term === 0 || term === undefined || term === null) {
-      return [];
-    }
     let month = 0;
     let remainingBalance = amount;
     let monthCount = 1;
     let totalPayed = 0;
-    while (remainingBalance > 0) {
-      totalPayed += montlyPayment;
-      const interestPayment = bankersRound(remainingBalance * (interest / 12));
-      const principalPayment = bankersRound(montlyPayment - interestPayment);
-      // TODO: Fix negative values
-      remainingBalance = bankersRound(remainingBalance - principalPayment);
+    while (remainingBalance > 1e-6 && monthCount < (200 * 12)) {
+      const interestPayment = remainingBalance * (interest / 12);
+      let principalPayment = montlyPayment - interestPayment;
+      if (principalPayment > remainingBalance) {
+        principalPayment = remainingBalance;
+      }
+      remainingBalance -= principalPayment;
+      totalPayed += interestPayment + principalPayment;
       calc.push({
-        totalPayed,
-        remainingBalance,
-        principalPayment,
-        interestPayment,
+        totalPayed: bankersRound(totalPayed),
+        remainingBalance: bankersRound(remainingBalance),
+        principalPayment: bankersRound(principalPayment),
+        interestPayment: bankersRound(interestPayment),
         label: monthCount,
       });
       monthCount++;
@@ -76,7 +77,7 @@
                 const item = tooltipItems[0];
                 const index = item.dataIndex;
                 const data = calculated[index];
-                return `Payment: ${formatCurrency(data.currPayment)}\nTotal Payed: ${formatCurrency(data.totalPayed)}\nRemaining Principle: ${formatCurrency(data.remainingBalance)}`;
+                return `Total Payed: ${formatCurrency(data.totalPayed)}\nRemaining Principle: ${formatCurrency(data.remainingBalance)}`;
               },
             },
           },
@@ -175,7 +176,7 @@
         <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style" /> %
       </div>
     </div>
-    <div>Monthly Payment: {formatCurrency(montlyPayment)}</div>
+    <div>Monthly Payment: {formatCurrency(bankersRound(montlyPayment))}</div>
     <div>Total Payment: {formatCurrency(predictedTotalPayment)}</div>
   </div>
   <div class="grow">

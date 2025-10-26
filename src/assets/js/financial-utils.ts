@@ -1,5 +1,5 @@
 export function totalMontlyPayment(loanAmount: number, termInterest: number, numberOfTerms: number): number {
-  return bankersRound((loanAmount * termInterest * Math.pow(1 + termInterest, numberOfTerms)) / (Math.pow(1 + termInterest, numberOfTerms) - 1));
+  return (loanAmount * termInterest * Math.pow(1 + termInterest, numberOfTerms)) / (Math.pow(1 + termInterest, numberOfTerms) - 1);
 }
 
 export function bankersRound(amount: number, decimalPlaces: number = 2): number {
