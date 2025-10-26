@@ -169,9 +169,9 @@
         </select>
       </div>
     </div>
-    <div class="flex items-center justify-between gap-2">
+    <div>
       <label for="loan-interest">Interest Rate:</label>
-      <div class="input">
+      <div class="input flex w-full">
         <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style" /> %
       </div>
     </div>
