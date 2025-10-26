@@ -35,6 +35,9 @@
   const predictedTotalPayment = $derived(montlyPayment * term * termMultiplier);
   const calculated = $derived.by(() => {
     let calc = [];
+    if (term === 0 || term === undefined || term === null) {
+      return [];
+    }
     let month = 0;
     let remainingBalance = amount;
     let monthCount = 1;
@@ -73,7 +76,7 @@
                 const item = tooltipItems[0];
                 const index = item.dataIndex;
                 const data = calculated[index];
-                return `Total Payed: ${formatCurrency(data.totalPayed)}\nRemaining Principle: ${formatCurrency(data.remainingBalance)}`;
+                return `Payment: ${formatCurrency(data.currPayment)}\nTotal Payed: ${formatCurrency(data.totalPayed)}\nRemaining Principle: ${formatCurrency(data.remainingBalance)}`;
               },
             },
           },
@@ -114,17 +117,17 @@
         },
       },
       data: {
-        labels: calculated.map(e => e.label),
+        labels: calculated.map((e) => e.label),
         datasets: [
           {
             label: "Principal Payment",
-            data: calculated.map(e => e.principalPayment),
+            data: calculated.map((e) => e.principalPayment),
             borderColor: greenValue,
             backgroundColor: greenValue,
           },
           {
             label: "Interest Payment",
-            data: calculated.map(e => e.interestPayment),
+            data: calculated.map((e) => e.interestPayment),
             borderColor: redValue,
             backgroundColor: redValue,
           },
