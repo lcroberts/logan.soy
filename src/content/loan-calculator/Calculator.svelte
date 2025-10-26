@@ -43,7 +43,8 @@
       totalPayed += montlyPayment;
       const interestPayment = bankersRound(remainingBalance * (interest / 12));
       const principalPayment = bankersRound(montlyPayment - interestPayment);
-      remainingBalance -= principalPayment;
+      // TODO: Fix negative values
+      remainingBalance = bankersRound(remainingBalance - principalPayment);
       calc.push({
         totalPayed,
         remainingBalance,
@@ -67,6 +68,12 @@
             callbacks: {
               title(tooltipItems) {
                 return "Month " + tooltipItems[0].label;
+              },
+              footer(tooltipItems) {
+                const item = tooltipItems[0];
+                const index = item.dataIndex;
+                const data = calculated[index];
+                return `Total Payed: ${formatCurrency(data.totalPayed)}\nRemaining Principle: ${formatCurrency(data.remainingBalance)}`;
               },
             },
           },
