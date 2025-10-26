@@ -35,7 +35,6 @@
   const predictedTotalPayment = $derived(montlyPayment * term * termMultiplier);
   const calculated = $derived.by(() => {
     if (!amount || !term || !interestPercentage) return [];
-
     let calc = [];
     let month = 0;
     let remainingBalance = amount;
@@ -152,7 +151,7 @@
     <div>
       <label for="loan-term">Loan Term:</label>
       <div class="flex w-full gap-2">
-        <input id="loan-term" class="grow" bind:value={term} type="number" />
+        <input id="loan-term" class="grow" bind:value={term} type="number" min="1" max={(200 * 12) / termMultiplier}/>
         <select
           id="term-multiplier"
           bind:value={
@@ -177,7 +176,7 @@
       </div>
     </div>
     <div>Monthly Payment: {formatCurrency(bankersRound(montlyPayment))}</div>
-    <div>Total Payment: {formatCurrency(predictedTotalPayment)}</div>
+    <div>Total Payment: {formatCurrency(bankersRound(predictedTotalPayment))}</div>
   </div>
   <div class="grow">
     <canvas {@attach chartJsAttachment}></canvas>
