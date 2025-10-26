@@ -33,23 +33,32 @@
     return 0;
   });
   const predictedTotalPayment = $derived(montlyPayment * term * termMultiplier);
+  const calculated = $derived.by(() => {
+    let calc = [];
+    let month = 0;
+    let remainingBalance = amount;
+    let monthCount = 1;
+    let totalPayed = 0;
+    while (remainingBalance > 0) {
+      totalPayed += montlyPayment;
+      const interestPayment = bankersRound(remainingBalance * (interest / 12));
+      const principalPayment = bankersRound(montlyPayment - interestPayment);
+      remainingBalance -= principalPayment;
+      calc.push({
+        totalPayed,
+        remainingBalance,
+        principalPayment,
+        interestPayment,
+        label: monthCount,
+      });
+      monthCount++;
+    }
+    return calc;
+  });
 
   const chartJsAttachment: Attachment = (element) => {
     const labelUnit = termMultiplier === 12 ? "Year" : "Month";
     let remainingPrincipal = structuredClone(amount);
-    let labels = [];
-    let interestDataset = [];
-    let principalDataset = [];
-    for (let i = 0; i < term; i++) {
-      for (let j = 0; j < termMultiplier; j++) {
-        labels.push(i * termMultiplier + j + 1);
-        const interestPayment = bankersRound(remainingPrincipal * (interest / 12));
-        const principalPayment = bankersRound(montlyPayment - interestPayment);
-        remainingPrincipal -= principalPayment;
-        interestDataset.push(interestPayment);
-        principalDataset.push(principalPayment);
-      }
-    }
     const chart = new Chart(element as HTMLCanvasElement, {
       type: "line",
       options: {
@@ -98,17 +107,17 @@
         },
       },
       data: {
-        labels: labels,
+        labels: calculated.map(e => e.label),
         datasets: [
           {
             label: "Principal Payment",
-            data: principalDataset,
+            data: calculated.map(e => e.principalPayment),
             borderColor: greenValue,
             backgroundColor: greenValue,
           },
           {
             label: "Interest Payment",
-            data: interestDataset,
+            data: calculated.map(e => e.interestPayment),
             borderColor: redValue,
             backgroundColor: redValue,
           },
@@ -150,7 +159,7 @@
         </select>
       </div>
     </div>
-    <div class="flex gap-2 items-center justify-between">
+    <div class="flex items-center justify-between gap-2">
       <label for="loan-interest">Interest Rate:</label>
       <div class="input">
         <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style" /> %
