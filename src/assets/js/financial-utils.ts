@@ -16,7 +16,3 @@ export function formatCurrency(amount: number): string {
     trailingZeroDisplay: 'stripIfInteger',
   }).format(amount);
 }
-
-export function getCssVar(name: string) {
-  return getComputedStyle(document.body).getPropertyValue(name)
-}

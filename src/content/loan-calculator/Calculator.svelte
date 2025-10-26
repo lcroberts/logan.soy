@@ -5,7 +5,8 @@
 <script lang="ts">
   import NumberInput from "../../components/svelte/NumberInput.svelte";
   import type { Attachment } from "svelte/attachments";
-  import { bankersRound, totalMontlyPayment, formatCurrency, getCssVar } from "./functions";
+  import { bankersRound, totalMontlyPayment, formatCurrency } from "../../assets/js/financial-utils";
+  import { getCssVar } from "../../assets/js/css-utils";
 
   let redValue = $state(getCssVar("--color-red"));
   let greenValue = $state(getCssVar("--color-green"));
