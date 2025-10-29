@@ -144,8 +144,8 @@
   <div class="flex flex-col gap-2">
     <div>
       <label for="loan-amount">Loan Amount:</label>
-      <div class="input flex w-full">
-        $ <NumberInput id="loan-amount" bind:value={amount} class="no-style" min="1" allowNegative={false} />
+      <div class="input !flex w-full gap-1">
+        <div>$</div> <NumberInput id="loan-amount" bind:value={amount} class="no-style grow" min="1" allowNegative={false} />
       </div>
     </div>
     <div>
@@ -171,8 +171,8 @@
     </div>
     <div>
       <label for="loan-interest">Interest Rate:</label>
-      <div class="input flex w-full">
-        <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style" /> %
+      <div class="input !flex w-full gap-1">
+        <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-full" /> <div>%</div>
       </div>
     </div>
     <div>Monthly Payment: {formatCurrency(bankersRound(montlyPayment))}</div>
