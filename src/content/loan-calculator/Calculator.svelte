@@ -7,6 +7,7 @@
   import type { Attachment } from "svelte/attachments";
   import { bankersRound, totalMontlyPayment, formatCurrency } from "../../assets/js/financial-utils";
   import { getCssVar } from "../../assets/js/css-utils";
+  import Accordion from "../../components/svelte/Accordion.svelte";
 
   let redValue = $state(getCssVar("--color-red"));
   let greenValue = $state(getCssVar("--color-green"));
@@ -22,6 +23,7 @@
   });
 
   let amount: number = $state(1000);
+  let extraPayment: number = $state(0);
   let term: number = $state(1);
   let interestPercentage: number = $state(5);
   let termMultiplier = $state(12);
@@ -40,9 +42,10 @@
     let remainingBalance = amount;
     let monthCount = 1;
     let totalPayed = 0;
-    while (remainingBalance > 1e-6 && monthCount < (200 * 12)) {
+    while (remainingBalance > 1e-6 && monthCount < 200 * 12) {
       const interestPayment = remainingBalance * (interest / 12);
       let principalPayment = montlyPayment - interestPayment;
+      principalPayment += extraPayment;
       if (principalPayment > remainingBalance) {
         principalPayment = remainingBalance;
       }
@@ -61,8 +64,8 @@
   });
 
   const chartJsAttachment: Attachment = (element) => {
-    const labelUnit = termMultiplier === 12 ? "Year" : "Month";
-    let remainingPrincipal = structuredClone(amount);
+    const labelUnit = termMultiplier === 12 && calculated.length > 11 ? "Year" : "Month";
+    const localTermMult = termMultiplier === 12 && calculated.length > 11 ? 12 : 1;
     const chart = new Chart(element as HTMLCanvasElement, {
       type: "line",
       options: {
@@ -102,8 +105,8 @@
             ticks: {
               color: catText,
               callback: function (tickValue, index, ticks) {
-                if (index % termMultiplier === termMultiplier - 1) {
-                  return labelUnit + " " + (index + 1) / termMultiplier;
+                if (index % localTermMult === localTermMult - 1) {
+                  return labelUnit + " " + (index + 1) / localTermMult;
                 }
               },
             },
@@ -141,17 +144,18 @@
 </script>
 
 <div class="flex w-full flex-col gap-4 px-4 md:flex-row md:px-0">
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 md:w-80">
     <div>
       <label for="loan-amount">Loan Amount:</label>
-      <div class="input !flex w-full gap-1">
-        <div>$</div> <NumberInput id="loan-amount" bind:value={amount} class="no-style grow" min="1" allowNegative={false} />
+      <div class="input flex! w-full gap-1">
+        <div>$</div>
+        <NumberInput id="loan-amount" bind:value={amount} class="no-style grow" min="1" allowNegative={false} />
       </div>
     </div>
     <div>
       <label for="loan-term">Loan Term:</label>
       <div class="flex w-full gap-2">
-        <input id="loan-term" class="grow" bind:value={term} type="number" min="1" max={(200 * 12) / termMultiplier}/>
+        <input id="loan-term" class="grow" bind:value={term} type="number" min="1" max={(200 * 12) / termMultiplier} />
         <select
           id="term-multiplier"
           bind:value={
@@ -171,10 +175,20 @@
     </div>
     <div>
       <label for="loan-interest">Interest Rate:</label>
-      <div class="input !flex w-full gap-1">
-        <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-full" /> <div>%</div>
+      <div class="input flex! w-full gap-1">
+        <NumberInput id="loan-interest" bind:value={interestPercentage} maxDecimal={5} allowNegative={false} class="no-style w-full" />
+        <div>%</div>
       </div>
     </div>
+    <Accordion title="Advanced">
+      <div>
+        <label for="loan-amount">Monthly Extra Payment:</label>
+        <div class="input flex! w-full gap-1">
+          <div>$</div>
+          <NumberInput id="loan-amount" bind:value={extraPayment} class="no-style grow" min="1" allowNegative={false} />
+        </div>
+      </div>
+    </Accordion>
     <div>Monthly Payment: {formatCurrency(bankersRound(montlyPayment))}</div>
     <div>Total Payment: {formatCurrency(bankersRound(predictedTotalPayment))}</div>
   </div>
