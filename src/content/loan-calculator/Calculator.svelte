@@ -61,6 +61,8 @@
     }
     return calc;
   });
+  const payingExtra = $derived(extraPayment !== 0 && extraPayment !== null && extraPayment !== undefined);
+  const actualPayment = $derived(calculated.at(-1)?.totalPayed || 0);
 
   const chartJsAttachment: Attachment = (element) => {
     const labelUnit = termMultiplier === 12 && calculated.length > 11 ? "Year" : "Month";
@@ -188,8 +190,13 @@
         </div>
       </div>
     </Accordion>
-    <div>Monthly Payment: {formatCurrency(bankersRound(montlyPayment))}</div>
-    <div>Total Payment: {formatCurrency(bankersRound(predictedTotalPayment))}</div>
+    <div>Minimum Monthly Payment: {formatCurrency(bankersRound(montlyPayment))}</div>
+    <div>Total Payment{#if payingExtra} &nbsp;(Predicted){/if}: {formatCurrency(bankersRound(predictedTotalPayment))}</div>
+    {#if payingExtra}
+      <div>Total Payment (Actual): {formatCurrency(bankersRound(actualPayment))}</div>
+      <div>Amount Saved: {formatCurrency(bankersRound(predictedTotalPayment - actualPayment))}</div>
+    {/if}
+    <div>Total Interest Payed: {formatCurrency(bankersRound(actualPayment - amount))}</div>
   </div>
   <div class="grow">
     <canvas {@attach chartJsAttachment}></canvas>
