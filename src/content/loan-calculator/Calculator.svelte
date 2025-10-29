@@ -38,7 +38,6 @@
   const calculated = $derived.by(() => {
     if (!amount || !term || !interestPercentage) return [];
     let calc = [];
-    let month = 0;
     let remainingBalance = amount;
     let monthCount = 1;
     let totalPayed = 0;
