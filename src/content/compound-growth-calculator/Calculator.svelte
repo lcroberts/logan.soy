@@ -7,6 +7,7 @@
   import type { Attachment } from "svelte/attachments";
   import { bankersRound, totalMontlyPayment, formatCurrency } from "../../assets/js/financial-utils";
   import { getCssVar } from "../../assets/js/css-utils";
+  import Accordion from "../../components/svelte/Accordion.svelte";
 
   let redValue = $state(getCssVar("--color-red"));
   let greenValue = $state(getCssVar("--color-green"));
@@ -27,10 +28,13 @@
   let termMultiplier: number = $state(12);
   let annualGrowth: number = $state(8);
   let annualInflation: number = $state(3);
+  let contributionGrowthPercentage: number = $state(0);
 
   const calculated = $derived.by(() => {
     const monthlyInflation = annualInflation / 12 / 100;
     const monthlyGrowth = annualGrowth / 12 / 100;
+    const monthlyContributionGrowth = contributionGrowthPercentage / 12 / 100;
+    let currContribution = monthlyContributions;
     let amount = startingAmount;
 
     let inflationRatio = 1;
@@ -40,9 +44,11 @@
         label: i + 1,
         amount: bankersRound(amount),
         amountAdjusted: bankersRound(amount / inflationRatio),
+        contribution: bankersRound(currContribution),
       });
       amount *= 1 + monthlyGrowth;
-      amount += monthlyContributions;
+      amount += currContribution;
+      currContribution *= 1 + monthlyContributionGrowth;
       inflationRatio *= 1 + monthlyInflation;
     }
     return calc;
@@ -64,7 +70,7 @@
                 const item = tooltipItems[0];
                 const index = item.dataIndex;
                 const data = calculated[index];
-                return `Inflation Adjusted: ${formatCurrency(data.amountAdjusted)}`;
+                return `Contribution: ${formatCurrency(data.contribution)}\nInflation Adjusted: ${formatCurrency(data.amountAdjusted)}`;
               },
             },
           },
@@ -124,7 +130,7 @@
 
 <div class="flex w-full flex-col gap-4 px-4 md:flex-row md:px-0">
   <div class="flex flex-col gap-2">
-    <div>
+    <div class="min-w-80">
       <label for="loan-amount">Starting Amount:</label>
       <div class="input flex! w-full gap-1">
         <div>$</div>
@@ -166,13 +172,24 @@
         <div>%</div>
       </div>
     </div>
-    <div>
-      <label for="loan-interest">Inflation Rate:</label>
-      <div class="input flex! w-full gap-1">
-        <NumberInput id="inflation-rate" bind:value={annualInflation} maxDecimal={5} allowNegative={false} class="no-style w-full" />
-        <div>%</div>
+    <Accordion title="Advanced">
+      <div class="flex flex-col gap-2">
+        <div>
+          <label for="loan-interest">Inflation Rate:</label>
+          <div class="input flex! w-full gap-1">
+            <NumberInput id="inflation-rate" bind:value={annualInflation} maxDecimal={5} allowNegative={false} class="no-style w-full" />
+            <div>%</div>
+          </div>
+        </div>
+        <div>
+          <label for="loan-interest">Annual Contribution Growth Rate:</label>
+          <div class="input flex! w-full gap-1">
+            <NumberInput id="inflation-rate" bind:value={contributionGrowthPercentage} maxDecimal={5} allowNegative={false} class="no-style w-full" />
+            <div>%</div>
+          </div>
+        </div>
       </div>
-    </div>
+    </Accordion>
     <div>
       <div>
         Ending Balance: {formatCurrency(calculated.at(-1)?.amount || 0)}
