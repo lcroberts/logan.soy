@@ -22,7 +22,7 @@ const posts = (await getCollection("pages")).sort((a, b) => b.data.date.valueOf(
         <a href="https://lcroberts.dev" class="link" target="_blank">lcroberts.dev</a>.
       </div>
       <section>
-        <ul>
+        <ul class="flex flex-col gap-4">
           {
             posts.map((post) => (
               <li>
