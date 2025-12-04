@@ -26,10 +26,10 @@
   let term: number = $state(10);
   let termMultiplier: number = $state(12);
   let annualGrowth: number = $state(8);
-  let yearlyInflation: number = $state(3);
+  let annualInflation: number = $state(3);
 
   const calculated = $derived.by(() => {
-    const monthlyInflation = yearlyInflation / 12 / 100;
+    const monthlyInflation = annualInflation / 12 / 100;
     const monthlyGrowth = annualGrowth / 12 / 100;
     let amount = startingAmount;
 
@@ -164,6 +164,21 @@
       <div class="input flex! w-full gap-1">
         <NumberInput id="percentage-growth" bind:value={annualGrowth} maxDecimal={5} allowNegative={false} class="no-style w-full" />
         <div>%</div>
+      </div>
+    </div>
+    <div>
+      <label for="loan-interest">Inflation Rate:</label>
+      <div class="input flex! w-full gap-1">
+        <NumberInput id="inflation-rate" bind:value={annualInflation} maxDecimal={5} allowNegative={false} class="no-style w-full" />
+        <div>%</div>
+      </div>
+    </div>
+    <div>
+      <div>
+        Ending Balance: {formatCurrency(calculated.at(-1)?.amount || 0)}
+      </div>
+      <div>
+        {formatCurrency(calculated.at(-1)?.amountAdjusted || 0)} in todays dollars
       </div>
     </div>
   </div>
